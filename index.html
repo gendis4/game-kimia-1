@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game Misi Kesetimbangan Kimia - Versi Ceria & Interaktif</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      color: #3e2723;
+      padding: 20px;
+      transition: background 1s ease;
+    }
+    header {
+      background: #ff7043;
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(255, 112, 67, 0.6);
+    }
+    section {
+      margin: 20px 0;
+      padding: 20px;
+      border: 2px solid #ffab91;
+      border-radius: 14px;
+      background: #fff3e0;
+      box-shadow: 0 6px 10px rgba(255, 171, 145, 0.4);
+    }
+    h2 { color: #d84315; }
+    button {
+      background: #ef6c00;
+      color: white;
+      padding: 12px 24px;
+      margin: 8px 8px 8px 0;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      user-select: none;
+      font-weight: bold;
+      box-shadow: 0 3px 7px rgba(239,108,0,0.7);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    button:hover {
+      background: #ffa726;
+      transform: scale(1.05);
+      box-shadow: 0 5px 12px rgba(255, 167, 38, 0.9);
+    }
+    #simulation-area {
+      margin-top: 15px;
+      padding: 15px;
+      border: 2px solid #f57c00;
+      border-radius: 14px;
+      background: #fff8e1;
+      min-height: 90px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-align: center;
+      white-space: pre-wrap;
+      color: #bf360c;
+      box-shadow: inset 0 0 10px #f57c00aa;
+    }
+    #explosion {
+      color: #d50000;
+      font-size: 3rem;
+      text-align: center;
+      margin: 20px 0;
+      display: none;
+      animation: explodeAnim 1s ease-in-out 3;
+      font-weight: bold;
+    }
+    @keyframes explodeAnim {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.5) rotate(20deg); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    #endMessage {
+      font-size: 1.4rem;
+      font-weight: bold;
+      text-align: center;
+      color: #2e7d32;
+      margin: 30px 0 15px;
+    }
+    #explanation {
+      background: #e8f5e9;
+      border: 2px solid #81c784;
+      padding: 15px;
+      border-radius: 14px;
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      font-size: 1rem;
+      color: #33691e;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Misi Kesetimbangan Kimia</h1>
+    <p>Bantu <strong>Gendis</strong>, ilmuwan muda, menyelesaikan misi produksi di pabrik kimia!</p>
+  </header>
+
+  <section id="level1">
+    <h2>Level 1: Suhu dan Arah Reaksi</h2>
+    <p><strong>Situasi:</strong> Sistem pemanas rusak dan suhu reaktor meningkat. Reaksi berikut bersifat eksoterm:</p>
+    <p>N₂(g) + 3H₂(g) ⇌ 2NH₃(g) + kalor</p>
+    <p><strong>Tantangan:</strong> Apa yang akan kamu lakukan agar produksi amonia tetap maksimal?</p>
+    <div class="choice-container">
+      <button onclick="recordAnswer(1, 'turunkan')">Turunkan suhu</button>
+      <button onclick="recordAnswer(1, 'naikkan')">Naikkan suhu</button>
+      <button onclick="recordAnswer(1, 'biarkan')">Biarkan suhu naik</button>
+      <button onclick="recordAnswer(1, 'tambahkan katalis')">Tambahkan katalis besi</button>
+      <button onclick="recordAnswer(1, 'kurangi tekanan')">Kurangi tekanan</button>
+    </div>
+  </section>
+
+  <section id="level2" style="display:none;">
+    <h2>Level 2: Tekanan dan Volume</h2>
+    <p><strong>Situasi:</strong> Tangki reaksi retak dan volume gas berubah.</p>
+    <p><strong>Tantangan:</strong> Reaksi berikut terjadi:</p>
+    <p>N₂(g) + 3H₂(g) ⇌ 2NH₃(g)</p>
+    <p>Apa strategi terbaik untuk menggeser kesetimbangan ke arah kanan?</p>
+    <div class="choice-container">
+      <button onclick="recordAnswer(2, 'tingkatkan tekanan')">Tingkatkan tekanan</button>
+      <button onclick="recordAnswer(2, 'turunkan tekanan')">Turunkan tekanan</button>
+      <button onclick="recordAnswer(2, 'jaga tekanan')">Jaga tekanan tetap</button>
+      <button onclick="recordAnswer(2, 'kurangi volume')">Kurangi volume</button>
+      <button onclick="recordAnswer(2, 'tingkatkan suhu')">Tingkatkan suhu</button>
+    </div>
+  </section>
+
+  <section id="level3" style="display:none;">
+    <h2>Level 3: Konsentrasi Reaktan</h2>
+    <p><strong>Situasi:</strong> Kamu menambahkan gas hidrogen ke dalam reaksi:</p>
+    <p>N₂(g) + 3H₂(g) ⇌ 2NH₃(g)</p>
+    <p><strong>Tantangan:</strong> Apa dampaknya terhadap arah kesetimbangan?</p>
+    <div class="choice-container">
+      <button onclick="recordAnswer(3, 'kanan')">Reaksi bergeser ke kanan</button>
+      <button onclick="recordAnswer(3, 'kiri')">Reaksi bergeser ke kiri</button>
+      <button onclick="recordAnswer(3, 'tidak ada perubahan')">Tidak ada perubahan</button>
+      <button onclick="recordAnswer(3, 'menghasilkan lebih banyak gas')">Menghasilkan lebih banyak gas</button>
+      <button onclick="recordAnswer(3, 'menghasilkan lebih sedikit gas')">Menghasilkan lebih sedikit gas</button>
+    </div>
+  </section>
+
+  <section id="explosion" style="display:none;">
+    💥💥💥 <br>PERINGATAN! Ada kesalahan dalam pilihanmu sebelumnya! <br>Siapkan diri untuk simulasi terakhir.
+  </section>
+
+  <section id="level4" style="display:none;">
+    <h2>Level 4: Simulasi Industri - Produksi Amonia</h2>
+    <p><strong>Misi:</strong> Dalam waktu 30 detik, pilih tindakan yang tepat untuk memproduksi amonia maksimal!</p>
+    <div class="choice-container">
+      <button onclick="takeAction('masukkan N2')">Masukkan N₂</button>
+      <button onclick="takeAction('masukkan H2')">Masukkan H₂</button>
+      <button onclick="takeAction('naikkan suhu')">Naikkan suhu</button>
+      <button onclick="takeAction('turunkan suhu')">Turunkan suhu</button>
+      <button onclick="takeAction('tambahkan katalis')">Tambahkan katalis</button>
+    </div>
+    <div id="simulation-area">Klik tombol aksi untuk mulai produksi amonia.</div>
+    <p>Waktu tersisa: <span id="timer">30</span> detik</p>
+    <p>Produksi amonia: <span id="productionCount">0</span> molekul</p>
+  </section>
+
+  <section id="explanation" style="display:none;">
+    <h2>Penjelasan Jawaban</h2>
+    <p><strong>Level 1:</strong> Menurunkan suhu dan menambahkan katalis besi membantu mempercepat reaksi dan menggeser kesetimbangan ke kanan karena reaksi eksoterm lebih disukai pada suhu rendah.</p>
+    <p><strong>Level 2:</strong> Meningkatkan tekanan dan mengurangi volume akan menggeser kesetimbangan ke arah produk karena jumlah mol gas berkurang di kanan.</p>
+    <p><strong>Level 3:</strong> Menambahkan hidrogen meningkatkan konsentrasi reaktan, sehingga kesetimbangan bergeser ke kanan, menghasilkan lebih banyak amonia.</p>
+  </section>
+
+  <section id="endMessage" style="display:none;"></section>
+
+  <script>
+    const levelErrors = {1:false, 2:false, 3:false};
+    let currentLevel = 1;
+    let retryCount = 0;
+    const maxRetries = 2;
+
+    const correctAnswers = {
+      1: ['turunkan', 'tambahkan katalis'],
+      2: ['tingkatkan tekanan', 'kurangi volume'],
+      3: ['kanan']
+    };
+
+    function recordAnswer(level, choice) {
+      if (!correctAnswers[level].includes(choice)) {
+        levelErrors[level] = true;
+      }
+      document.getElementById('level' + level).style.display = 'none';
+      currentLevel++;
+      if (currentLevel <= 3) {
+        document.getElementById('level' + currentLevel).style.display = 'block';
+      } else {
+        if (levelErrors[1] || levelErrors[2] || levelErrors[3]) {
+          if (retryCount < maxRetries) {
+            retryCount++;
+            alert("Beberapa jawaban kurang tepat. Coba ulangi ya!");
+            levelErrors[1] = levelErrors[2] = levelErrors[3] = false;
+            currentLevel = 1;
+            document.getElementById('level1').style.display = 'block';
+          } else {
+            document.getElementById('explosion').style.display = 'block';
+            setTimeout(() => {
+              document.getElementById('explosion').style.display = 'none';
+              showExplanationAndContinue();
+            }, 3000);
+          }
+        } else {
+          showExplanationAndContinue();
+        }
+      }
+    }
+
+    function showExplanationAndContinue() {
+      document.getElementById('explanation').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('explanation').style.display = 'none';
+        startLevel4();
+      }, 7000);
+    }
+
+    let timerInterval = null;
+    let timeLeft = 30;
+    let production = 0;
+    let simulationStarted = false;
+
+    function startLevel4() {
+      document.getElementById('level3').style.display = 'none';
+      document.getElementById('level4').style.display = 'block';
+      document.getElementById('simulation-area').textContent = "Klik tombol aksi untuk mulai produksi amonia.";
+      document.getElementById('timer').textContent = timeLeft;
+      document.getElementById('productionCount').textContent = production;
+      simulationStarted = false;
+      timeLeft = 30;
+      production = 0;
+      if (timerInterval) clearInterval(timerInterval);
+    }
+
+    function takeAction(action) {
+      if (!simulationStarted) {
+        simulationStarted = true;
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          document.getElementById('timer').textContent = timeLeft;
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            endSimulation();
+          }
+        }, 1000);
+      }
+
+      const simArea = document.getElementById('simulation-area');
+
+      if (action === 'masukkan N2' || action === 'masukkan H2') {
+        production += 10;
+        simArea.textContent = `Kamu menambahkan ${action.slice(9)}. Produksi amonia bertambah! (+10)`;
+      } else if (action === 'tambahkan katalis') {
+        production += 15;
+        simArea.textContent = "Katalis besi mempercepat reaksi! Produksi meningkat lebih cepat (+15)";
+      } else if (action === 'turunkan suhu') {
+        production += 12;
+        simArea.textContent = "Suhu diturunkan, reaksi eksoterm lebih efisien (+12)";
+      } else if (action === 'naikkan suhu') {
+        production -= 5;
+        simArea.textContent = "Suhu naik menurunkan produksi karena reaksi eksoterm terganggu (-5)";
+      }
+
+      if (production < 0) production = 0;
+      document.getElementById('productionCount').textContent = production;
+    }
+
+    function endSimulation() {
+      document.getElementById('simulation-area').textContent = "Waktu habis!";
+      document.getElementById('timer').textContent = 0;
+
+      const explosion = document.getElementById('explosion');
+      if (production < 50) {
+        explosion.style.display = 'block';
+        setTimeout(() => {
+          explosion.style.display = 'none';
+          showEndMessage(false);
+        }, 4000);
+      } else {
+        showEndMessage(true);
+      }
+    }
+
+    function showEndMessage(success) {
+      document.getElementById('level4').style.display = 'none';
+      const endMsg = document.getElementById('endMessage');
+      endMsg.textContent = success
+        ? "Selamat! Produksi amonia berhasil maksimal! Makasih sudah bermain!"
+        : "Sayang sekali, produksi kurang optimal. Jangan menyerah, coba lagi ya!";
+      endMsg.style.color = success ? '#2e7d32' : '#d84315';
+      endMsg.style.display = 'block';
+    }
+
+    window.onload = () => {
+      document.getElementById('level1').style.display = 'block';
+    };
+  </script>
+</body>
+</html>
